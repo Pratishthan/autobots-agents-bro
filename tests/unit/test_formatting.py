@@ -1,7 +1,7 @@
 # ABOUTME: Unit tests for Markdown formatting utilities.
 # ABOUTME: Validates conversion of structured outputs to readable Markdown.
 
-from bro_chat.utils.formatting import (
+from autobots_agents_bro.utils.formatting import (
     format_dict_item,
     format_entity_output,
     format_features_output,

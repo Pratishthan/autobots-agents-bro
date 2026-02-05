@@ -50,7 +50,7 @@ from tests.conftest import requires_google_api
 )
 def test_e2e_formatting_pipeline(output_type: str, sample_data: dict):
     """Each known output_type produces non-empty markdown."""
-    from bro_chat.utils.formatting import format_structured_output
+    from autobots_agents_bro.utils.formatting import format_structured_output
 
     result = format_structured_output(sample_data, output_type=output_type)
 

@@ -6,9 +6,9 @@ import logging
 
 from langchain.tools import ToolRuntime, tool
 
-from bro_chat.models.status import SectionStatus
-from bro_chat.services.document_store import DocumentStore
-from bro_chat.services.markdown_exporter import export_document
+from autobots_agents_bro.models.status import SectionStatus
+from autobots_agents_bro.services.document_store import DocumentStore
+from autobots_agents_bro.services.markdown_exporter import export_document
 from autobots_devtools_shared_lib.dynagent.config.settings import get_settings
 from autobots_devtools_shared_lib.dynagent.models.state import Dynagent
 
@@ -277,7 +277,9 @@ def delete_entity(runtime: ToolRuntime[None, Dynagent], entity_name: str) -> str
 
 def register_bro_tools() -> None:
     """Register all 10 BRO tools into the dynagent usecase pool."""
-    from autobots_devtools_shared_lib.dynagent.tools.tool_registry import register_usecase_tools
+    from autobots_devtools_shared_lib.dynagent.tools.tool_registry import (
+        register_usecase_tools,
+    )
 
     register_usecase_tools(
         [

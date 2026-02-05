@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
-from bro_chat.models.status import SectionStatus
+from autobots_agents_bro.models.status import SectionStatus
 
 
 def _now() -> datetime:

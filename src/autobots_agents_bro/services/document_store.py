@@ -7,8 +7,8 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from bro_chat.models.document import DocumentMeta, SectionMeta
-from bro_chat.models.status import SectionStatus
+from autobots_agents_bro.models.document import DocumentMeta, SectionMeta
+from autobots_agents_bro.models.status import SectionStatus
 
 logger = logging.getLogger(__name__)
 

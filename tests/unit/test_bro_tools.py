@@ -6,7 +6,7 @@ import json
 import pytest
 
 import bro_chat.agents.bro_tools as bro_tools
-from bro_chat.services.document_store import DocumentStore
+from autobots_agents_bro.services.document_store import DocumentStore
 
 # ---------------------------------------------------------------------------
 # Fixtures

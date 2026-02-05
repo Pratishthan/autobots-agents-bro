@@ -5,7 +5,7 @@ import logging
 
 import pytest
 
-from bro_chat.services.bro_batch import BRO_AGENTS, bro_batch
+from autobots_agents_bro.services.bro_batch import BRO_AGENTS, bro_batch
 from autobots_devtools_shared_lib.dynagent.agents.batch import BatchResult, RecordResult
 
 # ---------------------------------------------------------------------------

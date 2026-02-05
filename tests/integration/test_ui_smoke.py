@@ -24,7 +24,7 @@ def test_bro_usecase_ui_importable():
 
 def test_formatting_re_export_works():
     """The re-export in bro_chat.utils.formatting resolves to the dynagent origin."""
-    from bro_chat.utils.formatting import structured_to_markdown
+    from autobots_agents_bro.utils.formatting import structured_to_markdown
     from autobots_devtools_shared_lib.dynagent.ui.ui_utils import (
         structured_to_markdown as canonical,
     )

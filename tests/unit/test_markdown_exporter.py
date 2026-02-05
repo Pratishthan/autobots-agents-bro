@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from bro_chat.models.status import SectionStatus
-from bro_chat.services.document_store import DocumentStore
-from bro_chat.services.markdown_exporter import export_document
+from autobots_agents_bro.models.status import SectionStatus
+from autobots_agents_bro.services.document_store import DocumentStore
+from autobots_agents_bro.services.markdown_exporter import export_document
 
 
 @pytest.fixture

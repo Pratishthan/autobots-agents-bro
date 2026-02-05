@@ -3,7 +3,7 @@
 
 from types import SimpleNamespace
 
-from bro_chat.usecase_ui import get_preloaded_prompts
+from autobots_agents_bro.usecase_ui import get_preloaded_prompts
 
 
 def _msg(content: str, command: str | None = None) -> SimpleNamespace:

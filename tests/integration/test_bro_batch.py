@@ -3,7 +3,7 @@
 
 import pytest
 
-from bro_chat.services.bro_batch import bro_batch
+from autobots_agents_bro.services.bro_batch import bro_batch
 from tests.conftest import requires_google_api
 
 

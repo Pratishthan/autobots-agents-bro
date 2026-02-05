@@ -6,7 +6,7 @@ from collections.abc import Generator
 
 import pytest
 
-from bro_chat.config.settings import Settings
+from autobots_agents_bro.config.settings import Settings
 
 
 def has_real_google_key() -> bool:
@@ -65,9 +65,11 @@ def oauth_settings() -> Settings:
 @pytest.fixture
 def bro_registered():
     """Register BRO tools; reset after test."""
-    from bro_chat.agents.bro_tools import register_bro_tools
+    from autobots_agents_bro.agents.bro_tools import register_bro_tools
     from autobots_devtools_shared_lib.dynagent.agents.agent_meta import AgentMeta
-    from autobots_devtools_shared_lib.dynagent.tools.tool_registry import _reset_usecase_tools
+    from autobots_devtools_shared_lib.dynagent.tools.tool_registry import (
+        _reset_usecase_tools,
+    )
 
     _reset_usecase_tools()
     AgentMeta.reset()

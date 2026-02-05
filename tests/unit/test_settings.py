@@ -3,7 +3,7 @@
 
 import os
 
-from bro_chat.config.settings import Settings, get_settings
+from autobots_agents_bro.config.settings import Settings, get_settings
 
 
 class TestSettings:
