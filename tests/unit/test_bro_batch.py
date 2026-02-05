@@ -4,9 +4,9 @@
 import logging
 
 import pytest
+from autobots_devtools_shared_lib.dynagent.agents.batch import BatchResult, RecordResult
 
 from autobots_agents_bro.services.bro_batch import BRO_AGENTS, bro_batch
-from autobots_devtools_shared_lib.dynagent.agents.batch import BatchResult, RecordResult
 
 # ---------------------------------------------------------------------------
 # Stub infrastructure (autouse — replaces batch_invoker for every test here)
@@ -28,7 +28,9 @@ def _stub_invoker(agent_name: str, records: list[str]) -> BatchResult:
 @pytest.fixture(autouse=True)
 def _patch_invoker(monkeypatch):
     """Wire the stub into bro_batch's module namespace."""
-    monkeypatch.setattr("bro_chat.services.bro_batch.batch_invoker", _stub_invoker)
+    monkeypatch.setattr(
+        "autobots_agents_bro.services.bro_batch.batch_invoker", _stub_invoker
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -128,23 +130,31 @@ class TestDelegation:
 
 class TestLogging:
     def test_logs_start_message(self, caplog):
-        with caplog.at_level(logging.INFO, logger="bro_chat.services.bro_batch"):
+        with caplog.at_level(
+            logging.INFO, logger="autobots_agents_bro.services.bro_batch"
+        ):
             bro_batch("coordinator", ["hello"])
         assert any("bro_batch starting" in rec.message for rec in caplog.records)
 
     def test_logs_complete_message(self, caplog):
-        with caplog.at_level(logging.INFO, logger="bro_chat.services.bro_batch"):
+        with caplog.at_level(
+            logging.INFO, logger="autobots_agents_bro.services.bro_batch"
+        ):
             bro_batch("coordinator", ["hello"])
         assert any("bro_batch complete" in rec.message for rec in caplog.records)
 
     def test_log_includes_agent_name(self, caplog):
-        with caplog.at_level(logging.INFO, logger="bro_chat.services.bro_batch"):
+        with caplog.at_level(
+            logging.INFO, logger="autobots_agents_bro.services.bro_batch"
+        ):
             bro_batch("preface_agent", ["hello"])
         combined = " ".join(rec.message for rec in caplog.records)
         assert "preface_agent" in combined
 
     def test_log_includes_record_count(self, caplog):
-        with caplog.at_level(logging.INFO, logger="bro_chat.services.bro_batch"):
+        with caplog.at_level(
+            logging.INFO, logger="autobots_agents_bro.services.bro_batch"
+        ):
             bro_batch("coordinator", ["a", "b", "c"])
         # The start log should mention the count 3
         start_msgs = [

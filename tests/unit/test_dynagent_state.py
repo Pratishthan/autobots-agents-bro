@@ -1,9 +1,8 @@
 # ABOUTME: Unit tests for Dynagent state schema.
 # ABOUTME: Verifies state class structure and NotRequired field definitions.
 
-from langchain.agents import AgentState
-
 from autobots_devtools_shared_lib.dynagent.models.state import Dynagent
+from langchain.agents import AgentState
 
 
 def test_dynagent_is_agent_state_subclass():

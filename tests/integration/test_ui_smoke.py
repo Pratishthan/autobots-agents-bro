@@ -19,15 +19,16 @@ def test_dynagent_default_ui_importable():
 
 def test_bro_usecase_ui_importable():
     """bro_chat.usecase_ui loads cleanly; registration side-effects run."""
-    import bro_chat.usecase_ui as mod  # noqa: F401
+    import autobots_agents_bro.usecase_ui as mod  # noqa: F401
 
 
 def test_formatting_re_export_works():
     """The re-export in bro_chat.utils.formatting resolves to the dynagent origin."""
-    from autobots_agents_bro.utils.formatting import structured_to_markdown
     from autobots_devtools_shared_lib.dynagent.ui.ui_utils import (
         structured_to_markdown as canonical,
     )
+
+    from autobots_agents_bro.utils.formatting import structured_to_markdown
 
     # Should be the exact same function object
     assert structured_to_markdown is canonical

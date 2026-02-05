@@ -2,9 +2,9 @@
 # ABOUTME: bro_registered_e2e (autouse) in conftest handles tool registration.
 
 import pytest
+from autobots_devtools_shared_lib.dynagent.agents.batch import BatchResult, RecordResult
 
 from autobots_agents_bro.services.bro_batch import bro_batch
-from autobots_devtools_shared_lib.dynagent.agents.batch import BatchResult, RecordResult
 from tests.conftest import requires_google_api
 
 

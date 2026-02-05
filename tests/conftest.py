@@ -3,10 +3,22 @@
 
 import os
 from collections.abc import Generator
+from pathlib import Path
 
 import pytest
 
 from autobots_agents_bro.config.settings import Settings
+
+_BRO_CONFIG_CANDIDATES = [
+    Path("configs/bro"),
+    Path("autobots-agents-bro/configs/bro"),
+    Path("../autobots-agents-bro/configs/bro"),
+]
+_BRO_CONFIG_DIR: Path | None = None
+for _c in _BRO_CONFIG_CANDIDATES:
+    if (_c / "agents.yaml").exists():
+        _BRO_CONFIG_DIR = _c
+        break
 
 
 def has_real_google_key() -> bool:
@@ -19,6 +31,21 @@ requires_google_api = pytest.mark.skipif(
     not has_real_google_key(),
     reason="Requires real GOOGLE_API_KEY environment variable",
 )
+
+
+@pytest.fixture(autouse=True)
+def _dynagent_env(monkeypatch):
+    """Reset agent-config cache and point env vars at the real bro config."""
+    from autobots_devtools_shared_lib.dynagent.agents.agent_config_utils import (
+        _reset_agent_config,
+    )
+
+    _reset_agent_config()
+    if _BRO_CONFIG_DIR is not None:
+        monkeypatch.setenv("DYNAGENT_CONFIG_ROOT_DIR", str(_BRO_CONFIG_DIR))
+        monkeypatch.setenv("SCHEMA_BASE", str(_BRO_CONFIG_DIR / "schemas"))
+    yield
+    _reset_agent_config()
 
 
 @pytest.fixture
@@ -65,11 +92,12 @@ def oauth_settings() -> Settings:
 @pytest.fixture
 def bro_registered():
     """Register BRO tools; reset after test."""
-    from autobots_agents_bro.agents.bro_tools import register_bro_tools
     from autobots_devtools_shared_lib.dynagent.agents.agent_meta import AgentMeta
     from autobots_devtools_shared_lib.dynagent.tools.tool_registry import (
         _reset_usecase_tools,
     )
+
+    from autobots_agents_bro.agents.bro_tools import register_bro_tools
 
     _reset_usecase_tools()
     AgentMeta.reset()

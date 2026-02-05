@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-import bro_chat.agents.bro_tools as bro_tools
+import autobots_agents_bro.agents.bro_tools as bro_tools
 from autobots_agents_bro.services.document_store import DocumentStore
 
 # ---------------------------------------------------------------------------

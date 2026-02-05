@@ -1,8 +1,6 @@
 # ABOUTME: Unit tests for dynagent state management tools.
 # ABOUTME: Covers command helpers, workspace file ops, and handoff validation.
 
-from langgraph.types import Command
-
 from autobots_devtools_shared_lib.dynagent.tools.state_tools import (
     _do_read_file,
     _do_write_file,
@@ -10,6 +8,7 @@ from autobots_devtools_shared_lib.dynagent.tools.state_tools import (
     error_cmd,
     transition_cmd,
 )
+from langgraph.types import Command
 
 # --- Command helpers ---
 

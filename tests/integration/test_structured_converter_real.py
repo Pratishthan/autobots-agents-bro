@@ -2,10 +2,12 @@
 # ABOUTME: Validates actual conversation to structured output conversion without mocks.
 
 import pytest
+from autobots_devtools_shared_lib.dynagent.services.structured_converter import (
+    StructuredOutputConverter,
+)
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from autobots_devtools_shared_lib.dynagent.services.structured_converter import StructuredOutputConverter
 from tests.conftest import requires_google_api
 
 

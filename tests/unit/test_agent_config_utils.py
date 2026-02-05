@@ -49,10 +49,10 @@ def test_get_schema_path_map_coordinator_is_none():
 def test_get_schema_path_map_section_agents_have_expected_paths():
     schema_map = get_schema_path_map()
     expected = {
-        "preface_agent": "vision-agent/01-preface.json",
-        "getting_started_agent": "vision-agent/02-getting-started.json",
-        "features_agent": "vision-agent/03-01-list-of-features.json",
-        "entity_agent": "vision-agent/05-entity.json",
+        "preface_agent": "01-preface.json",
+        "getting_started_agent": "02-getting-started.json",
+        "features_agent": "03-01-list-of-features.json",
+        "entity_agent": "05-entity.json",
     }
     for agent, path in expected.items():
         assert schema_map.get(agent) == path, f"{agent} schema path mismatch"
@@ -82,7 +82,9 @@ def test_get_tool_map_resolves_per_agent(bro_registered):  # noqa: ARG001
 
 def test_get_tool_map_warns_on_unresolved(caplog):
     """Without BRO registration, BRO tools are unresolved → warning logged."""
-    from autobots_devtools_shared_lib.dynagent.tools.tool_registry import _reset_usecase_tools
+    from autobots_devtools_shared_lib.dynagent.tools.tool_registry import (
+        _reset_usecase_tools,
+    )
 
     _reset_usecase_tools()
     with caplog.at_level(logging.WARNING):

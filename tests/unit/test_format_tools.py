@@ -2,7 +2,6 @@
 # ABOUTME: Verifies schema resolution per agent and error for no-schema agents.
 
 import pytest
-
 from autobots_devtools_shared_lib.dynagent.agents.agent_meta import AgentMeta
 from autobots_devtools_shared_lib.dynagent.config.settings import get_settings
 
@@ -16,28 +15,22 @@ def reset_singleton():
 
 def test_schema_resolves_for_preface_agent():
     meta = AgentMeta.instance()
-    assert meta.schema_path_map["preface_agent"] == "vision-agent/01-preface.json"
+    assert meta.schema_path_map["preface_agent"] == "01-preface.json"
 
 
 def test_schema_resolves_for_getting_started_agent():
     meta = AgentMeta.instance()
-    assert (
-        meta.schema_path_map["getting_started_agent"]
-        == "vision-agent/02-getting-started.json"
-    )
+    assert meta.schema_path_map["getting_started_agent"] == "02-getting-started.json"
 
 
 def test_schema_resolves_for_features_agent():
     meta = AgentMeta.instance()
-    assert (
-        meta.schema_path_map["features_agent"]
-        == "vision-agent/03-01-list-of-features.json"
-    )
+    assert meta.schema_path_map["features_agent"] == "03-01-list-of-features.json"
 
 
 def test_schema_resolves_for_entity_agent():
     meta = AgentMeta.instance()
-    assert meta.schema_path_map["entity_agent"] == "vision-agent/05-entity.json"
+    assert meta.schema_path_map["entity_agent"] == "05-entity.json"
 
 
 def test_coordinator_has_no_schema():

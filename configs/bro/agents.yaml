@@ -3,7 +3,7 @@
 
 agents:
   coordinator:
-    prompt: "vision-agent/coordinator"
+    prompt: "coordinator"
     tools:
       - "handoff"
       - "get_document_status"
@@ -15,8 +15,8 @@ agents:
 
   preface_agent:
     section: "01-preface"
-    prompt: "vision-agent/01-preface"
-    output_schema: "vision-agent/01-preface.json"
+    prompt: "01-preface"
+    output_schema: "01-preface.json"
     approach: "qa"
     tools:
       - "handoff"
@@ -27,8 +27,8 @@ agents:
 
   getting_started_agent:
     section: "02-getting-started"
-    prompt: "vision-agent/02-getting-started"
-    output_schema: "vision-agent/02-getting-started.json"
+    prompt: "02-getting-started"
+    output_schema: "02-getting-started.json"
     approach: "qa"
     tools:
       - "handoff"
@@ -39,8 +39,8 @@ agents:
 
   features_agent:
     section: "03-01-list-of-features"
-    prompt: "vision-agent/03-01-list-of-features"
-    output_schema: "vision-agent/03-01-list-of-features.json"
+    prompt: "03-01-list-of-features"
+    output_schema: "03-01-list-of-features.json"
     approach: "qa"
     tools:
       - "handoff"
@@ -51,8 +51,8 @@ agents:
 
   entity_agent:
     section: "05-entities"
-    prompt: "vision-agent/05-entity"
-    output_schema: "vision-agent/05-entity.json"
+    prompt: "05-entity"
+    output_schema: "05-entity.json"
     approach: "template"
     dynamic: true
     tools:

@@ -4,7 +4,6 @@
 import uuid
 
 import pytest
-
 from autobots_devtools_shared_lib.dynagent.agents.batch import (
     BatchResult,
     RecordResult,
