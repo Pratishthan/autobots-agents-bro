@@ -26,6 +26,9 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+# Application name for tracing and identification
+APP_NAME = "bro_chat"
+
 # Registration must precede AgentMeta.instance() (called inside create_base_agent).
 register_bro_tools()
 
@@ -101,6 +104,7 @@ async def on_message(message: cl.Message):
             "thread_id": cl.context.session.thread_id,
         },
         "recursion_limit": 50,
+        "run_name": APP_NAME,  # Set trace name for Langfuse
     }
 
     # Add Langfuse handler if available
@@ -121,12 +125,11 @@ async def on_message(message: cl.Message):
         return
 
     user_name = user.identifier
-    app_name = "coordinator"
 
     input_state: dict[str, Any] = {
         "messages": [{"role": "user", "content": prompt}],
         "user_name": user_name,
-        "app_name": app_name,
+        "app_name": APP_NAME,
         "session_id": cl.context.session.thread_id,
     }
 
@@ -135,6 +138,7 @@ async def on_message(message: cl.Message):
         with propagate_attributes(
             user_id=user_name[:200],  # Ensure ≤200 chars as per Langfuse requirements
             session_id=cl.context.session.thread_id[:200],  # Use thread_id as session
+            tags=[APP_NAME],  # Tag with app name for filtering in Langfuse
         ):
             await stream_agent_events(
                 agent,

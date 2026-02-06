@@ -4,6 +4,7 @@
 agents:
   coordinator:
     prompt: "coordinator"
+    batch_enabled: true
     tools:
       - "handoff"
       - "get_document_status"
@@ -18,6 +19,7 @@ agents:
     prompt: "01-preface"
     output_schema: "01-preface.json"
     approach: "qa"
+    batch_enabled: true
     tools:
       - "handoff"
       - "update_section"
@@ -30,6 +32,7 @@ agents:
     prompt: "02-getting-started"
     output_schema: "02-getting-started.json"
     approach: "qa"
+    batch_enabled: true
     tools:
       - "handoff"
       - "update_section"
@@ -42,6 +45,7 @@ agents:
     prompt: "03-01-list-of-features"
     output_schema: "03-01-list-of-features.json"
     approach: "qa"
+    batch_enabled: true
     tools:
       - "handoff"
       - "update_section"
@@ -55,6 +59,7 @@ agents:
     output_schema: "05-entity.json"
     approach: "template"
     dynamic: true
+    batch_enabled: true
     tools:
       - "handoff"
       - "update_section"

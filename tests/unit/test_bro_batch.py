@@ -1,19 +1,22 @@
 # ABOUTME: Unit tests for the bro_batch service module.
-# ABOUTME: Covers BRO_AGENTS pinning, validation, delegation via stub, and logging.
+# ABOUTME: Covers batch-enabled agents, validation, delegation via stub, and logging.
 
 import logging
 
 import pytest
+from autobots_devtools_shared_lib.dynagent.agents.agent_config_utils import (
+    get_batch_enabled_agents,
+)
 from autobots_devtools_shared_lib.dynagent.agents.batch import BatchResult, RecordResult
 
-from autobots_agents_bro.services.bro_batch import BRO_AGENTS, bro_batch
+from autobots_agents_bro.services.bro_batch import bro_batch
 
 # ---------------------------------------------------------------------------
 # Stub infrastructure (autouse — replaces batch_invoker for every test here)
 # ---------------------------------------------------------------------------
 
 
-def _stub_invoker(agent_name: str, records: list[str]) -> BatchResult:
+def _stub_invoker(agent_name: str, records: list[str], **kwargs) -> BatchResult:
     """Synthetic stand-in: one success per record, no LLM call."""
     return BatchResult(
         agent_name=agent_name,
@@ -34,41 +37,44 @@ def _patch_invoker(monkeypatch):
 
 
 # ---------------------------------------------------------------------------
-# TestBroAgentsList — pins the BRO_AGENTS constant
+# TestBroAgentsList — verifies batch-enabled agents from config
 # ---------------------------------------------------------------------------
 
 
 class TestBroAgentsList:
     def test_contains_coordinator(self):
-        assert "coordinator" in BRO_AGENTS
+        bro_agents = get_batch_enabled_agents()
+        assert "coordinator" in bro_agents
 
     def test_contains_all_section_agents(self):
+        bro_agents = get_batch_enabled_agents()
         section_agents = {
             "preface_agent",
             "getting_started_agent",
             "features_agent",
             "entity_agent",
         }
-        assert section_agents.issubset(set(BRO_AGENTS))
+        assert section_agents.issubset(set(bro_agents))
 
     def test_length_matches_agents_yaml(self):
-        # agents.yaml defines exactly 5 agents owned by BRO
-        assert len(BRO_AGENTS) == 5
+        # agents.yaml defines exactly 5 batch-enabled agents
+        bro_agents = get_batch_enabled_agents()
+        assert len(bro_agents) == 5
 
 
 # ---------------------------------------------------------------------------
-# TestAgentNameValidation — rejects non-BRO agents before any LLM call
+# TestAgentNameValidation — rejects non-batch-enabled agents before any LLM call
 # ---------------------------------------------------------------------------
 
 
 class TestAgentNameValidation:
     def test_raises_on_unknown_agent(self):
-        with pytest.raises(ValueError, match="Unknown BRO agent"):
+        with pytest.raises(ValueError, match="not enabled for batch processing"):
             bro_batch("totally_fake_agent", ["hello"])
 
     def test_raises_on_dynagent_only_agent(self):
-        # An agent that dynagent might know but BRO does not own
-        with pytest.raises(ValueError, match="Unknown BRO agent"):
+        # An agent that dynagent might know but is not batch-enabled
+        with pytest.raises(ValueError, match="not enabled for batch processing"):
             bro_batch("some_other_agent", ["hello"])
 
     def test_error_message_lists_valid_agents(self):
@@ -117,7 +123,8 @@ class TestDelegation:
         assert all(r.success for r in result.results)
 
     def test_works_with_every_bro_agent(self):
-        for agent in BRO_AGENTS:
+        bro_agents = get_batch_enabled_agents()
+        for agent in bro_agents:
             result = bro_batch(agent, ["ping"])
             assert result.agent_name == agent
             assert result.total == 1
