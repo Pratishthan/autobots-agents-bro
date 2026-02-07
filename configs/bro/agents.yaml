@@ -20,6 +20,7 @@ agents:
     output_schema: "01-preface.json"
     approach: "qa"
     batch_enabled: true
+    is_default: true
     tools:
       - "handoff"
       - "update_section"
