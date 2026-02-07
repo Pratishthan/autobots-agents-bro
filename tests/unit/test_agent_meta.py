@@ -59,9 +59,7 @@ def test_schema_path_map_section_agents_populated():
         "features_agent",
         "entity_agent",
     ):
-        assert (
-            meta.schema_path_map.get(agent) is not None
-        ), f"{agent} schema_path_map is None"
+        assert meta.schema_path_map.get(agent) is not None, f"{agent} schema_path_map is None"
 
 
 def test_tool_map_has_all_agents():
@@ -69,7 +67,7 @@ def test_tool_map_has_all_agents():
     assert set(meta.tool_map.keys()) == EXPECTED_AGENTS
 
 
-def test_tool_map_values_are_non_empty_lists(bro_registered):  # noqa: ARG001
+def test_tool_map_values_are_non_empty_lists(bro_registered):
     """With BRO registered, every agent resolves at least its listed tools."""
     meta = AgentMeta.instance()
     for name, tools in meta.tool_map.items():

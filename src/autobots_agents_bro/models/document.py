@@ -89,9 +89,7 @@ class DocumentMeta:
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
             "last_section": self.last_section,
-            "sections": {
-                section_id: meta.to_dict() for section_id, meta in self.sections.items()
-            },
+            "sections": {section_id: meta.to_dict() for section_id, meta in self.sections.items()},
             "dynamic_items": self.dynamic_items.to_dict(),
         }
 

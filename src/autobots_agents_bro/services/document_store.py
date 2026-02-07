@@ -36,7 +36,7 @@ class DocumentStore:
     def _save_meta(self, meta: DocumentMeta) -> None:
         """Save document metadata to _meta.json."""
         meta_path = self._meta_path(meta.component, meta.version)
-        with open(meta_path, "w") as f:
+        with meta_path.open("w") as f:
             json.dump(meta.to_dict(), f, indent=2)
 
     def create_document(self, component: str, version: str) -> DocumentMeta:
@@ -72,7 +72,7 @@ class DocumentStore:
         if not meta_path.exists():
             return None
 
-        with open(meta_path) as f:
+        with meta_path.open() as f:
             data = json.load(f)
 
         return DocumentMeta.from_dict(data)
@@ -120,9 +120,7 @@ class DocumentStore:
         logger.info(f"Deleted document: {component}/{version}")
         return True
 
-    def write_section(
-        self, meta: DocumentMeta, section_id: str, content: dict[str, Any]
-    ) -> bool:
+    def write_section(self, meta: DocumentMeta, section_id: str, content: dict[str, Any]) -> bool:
         """Write section content to a file.
 
         Args:
@@ -136,7 +134,7 @@ class DocumentStore:
         doc_dir = self._doc_dir(meta.component, meta.version)
         section_path = doc_dir / f"{section_id}.json"
 
-        with open(section_path, "w") as f:
+        with section_path.open("w") as f:
             json.dump(content, f, indent=2)
 
         # Update last_section in metadata
@@ -148,9 +146,7 @@ class DocumentStore:
         logger.info(f"Wrote section: {meta.doc_id}/{section_id}")
         return True
 
-    def read_section(
-        self, meta: DocumentMeta, section_id: str
-    ) -> dict[str, Any] | None:
+    def read_section(self, meta: DocumentMeta, section_id: str) -> dict[str, Any] | None:
         """Read section content from a file.
 
         Args:
@@ -166,7 +162,7 @@ class DocumentStore:
         if not section_path.exists():
             return None
 
-        with open(section_path) as f:
+        with section_path.open() as f:
             return json.load(f)
 
     def update_section_status(
@@ -218,7 +214,7 @@ class DocumentStore:
         doc_dir = self._doc_dir(meta.component, meta.version)
         entity_path = doc_dir / f"{section_id}.json"
         if not entity_path.exists():
-            with open(entity_path, "w") as f:
+            with entity_path.open("w") as f:
                 json.dump({"name": entity_name, "attributes": []}, f, indent=2)
 
         logger.info(f"Created entity: {meta.doc_id}/{entity_name}")

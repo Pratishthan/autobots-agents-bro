@@ -47,9 +47,7 @@ def _read_context(session_id: str) -> dict[str, str] | None:
 # --- Core logic helpers (plain-arg, testable without runtime) ---
 
 # Shared error messages (extracted to stay within line-length limits)
-_ERR_NO_CONTEXT = (
-    "Error: no active document. Use create_document or set_document_context first."
-)
+_ERR_NO_CONTEXT = "Error: no active document. Use create_document or set_document_context first."
 
 
 def _err_not_on_disk(ctx: dict[str, str]) -> str:
@@ -61,9 +59,7 @@ def _do_create_document(session_id: str, component: str, version: str) -> str:
     store = _make_store()
     store.create_document(component, version)
     _write_context(session_id, component, version)
-    return (
-        f"Created document '{component}/{version}' and set it as the active document."
-    )
+    return f"Created document '{component}/{version}' and set it as the active document."
 
 
 def _do_set_document_context(session_id: str, component: str, version: str) -> str:
@@ -133,10 +129,7 @@ def _do_set_section_status(session_id: str, section_id: str, status: str) -> str
     if doc is None:
         return _err_not_on_disk(ctx)
     store.update_section_status(doc, section_id, SectionStatus(status))
-    return (
-        f"Set section '{section_id}' status to '{status}' "
-        f"in '{doc.component}/{doc.version}'."
-    )
+    return f"Set section '{section_id}' status to '{status}' in '{doc.component}/{doc.version}'."
 
 
 def _do_export_markdown(session_id: str) -> str:
@@ -185,10 +178,7 @@ def _do_delete_entity(session_id: str, entity_name: str) -> str:
     if doc is None:
         return _err_not_on_disk(ctx)
     if not store.delete_entity(doc, entity_name):
-        return (
-            f"Error: entity '{entity_name}' not found "
-            f"in '{doc.component}/{doc.version}'."
-        )
+        return f"Error: entity '{entity_name}' not found in '{doc.component}/{doc.version}'."
     return f"Deleted entity '{entity_name}' from '{doc.component}/{doc.version}'."
 
 
@@ -196,18 +186,14 @@ def _do_delete_entity(session_id: str, entity_name: str) -> str:
 
 
 @tool
-def create_document(
-    runtime: ToolRuntime[None, Dynagent], component: str, version: str
-) -> str:
+def create_document(runtime: ToolRuntime[None, Dynagent], component: str, version: str) -> str:
     """Create a new vision document and set it as the active document."""
     session_id = runtime.state.get("session_id", "default")
     return _do_create_document(session_id, component, version)
 
 
 @tool
-def set_document_context(
-    runtime: ToolRuntime[None, Dynagent], component: str, version: str
-) -> str:
+def set_document_context(runtime: ToolRuntime[None, Dynagent], component: str, version: str) -> str:
     """Switch the active document to an existing one (errors if missing)."""
     session_id = runtime.state.get("session_id", "default")
     return _do_set_document_context(session_id, component, version)
@@ -227,18 +213,14 @@ def list_documents() -> str:
 
 
 @tool
-def update_section(
-    runtime: ToolRuntime[None, Dynagent], section_id: str, content: str
-) -> str:
+def update_section(runtime: ToolRuntime[None, Dynagent], section_id: str, content: str) -> str:
     """Write structured content (JSON string) to a section of the active document."""
     session_id = runtime.state.get("session_id", "default")
     return _do_update_section(session_id, section_id, content)
 
 
 @tool
-def set_section_status(
-    runtime: ToolRuntime[None, Dynagent], section_id: str, status: str
-) -> str:
+def set_section_status(runtime: ToolRuntime[None, Dynagent], section_id: str, status: str) -> str:
     """Update the status of a section in the active document."""
     session_id = runtime.state.get("session_id", "default")
     return _do_set_section_status(session_id, section_id, status)

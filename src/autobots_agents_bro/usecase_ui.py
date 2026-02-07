@@ -2,7 +2,7 @@
 # ABOUTME: Wires tracing, OAuth, commands, and the shared streaming helper.
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import chainlit as cl
 from autobots_devtools_shared_lib.dynagent.agents.base_agent import create_base_agent
@@ -14,11 +14,13 @@ from autobots_devtools_shared_lib.dynagent.observability.tracing import (
 from autobots_devtools_shared_lib.dynagent.ui.ui_utils import stream_agent_events
 from chainlit.types import CommandDict
 from dotenv import load_dotenv
-from langchain_core.runnables import RunnableConfig
 from langfuse import propagate_attributes
 
 from autobots_agents_bro.agents.bro_tools import register_bro_tools
 from autobots_agents_bro.utils.formatting import format_structured_output
+
+if TYPE_CHECKING:
+    from langchain_core.runnables import RunnableConfig
 
 # Load environment variables from .env file
 load_dotenv()
@@ -81,10 +83,9 @@ def get_preloaded_prompts(msg: Any) -> str:
     """Return the effective prompt string for a message, honouring slash commands."""
     if msg.command == "View-Context":
         return "Get and display the current SDLC context using get_context tool"
-    elif msg.command == "Edit-Context":
+    if msg.command == "Edit-Context":
         return "Start LLD Consolidator Assistant"
-    else:
-        return msg.content
+    return msg.content
 
 
 @cl.on_chat_start
@@ -119,9 +120,7 @@ async def on_message(message: cl.Message):
     user = cl.user_session.get("user")
 
     if not agent or not user:
-        await cl.Message(
-            content="Error: Session initialization failed. Please refresh."
-        ).send()
+        await cl.Message(content="Error: Session initialization failed. Please refresh.").send()
         return
 
     user_name = user.identifier

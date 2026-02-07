@@ -35,8 +35,7 @@ def format_preface_output(data: dict[str, Any]) -> str:
 
     if audience := data.get("audience"):
         lines.append("**Intended Audience:**")
-        for person in audience:
-            lines.append(f"- {person}")
+        lines.extend(f"- {person}" for person in audience)
         lines.append("")
 
     if refs := data.get("reference_documents"):
@@ -70,8 +69,7 @@ def format_getting_started_output(data: dict[str, Any]) -> str:
 
     if metrics := data.get("success_metrics"):
         lines.append("**Success Metrics:**")
-        for metric in metrics:
-            lines.append(f"- {metric}")
+        lines.extend(f"- {metric}" for metric in metrics)
         lines.append("")
 
     return "\n".join(lines)
@@ -122,8 +120,7 @@ def format_entity_output(data: dict[str, Any]) -> str:
 
     if rules := data.get("business_rules"):
         lines.append("### Business Rules\n")
-        for rule in rules:
-            lines.append(f"- {rule}")
+        lines.extend(f"- {rule}" for rule in rules)
         lines.append("")
 
     return "\n".join(lines)
@@ -138,9 +135,7 @@ OUTPUT_FORMATTERS = {
 }
 
 
-def format_structured_output(
-    data: dict[str, Any], output_type: str | None = None
-) -> str:
+def format_structured_output(data: dict[str, Any], output_type: str | None = None) -> str:
     """
     Format structured output for UI display.
 

@@ -100,9 +100,7 @@ def test_preface_conversion_with_payment_gateway(real_converter):
     Tests extraction of about_this_guide and audience fields.
     """
     messages = [
-        HumanMessage(
-            content="I need to create a vision document for our Payment Gateway API"
-        ),
+        HumanMessage(content="I need to create a vision document for our Payment Gateway API"),
         AIMessage(
             content=(
                 "Great! Let's start with the preface. This document will serve "
@@ -136,9 +134,7 @@ def test_preface_conversion_with_payment_gateway(real_converter):
     # Validate required fields
     assert "about_this_guide" in result
     assert isinstance(result["about_this_guide"], str)
-    assert (
-        len(result["about_this_guide"]) >= 20
-    ), "about_this_guide must be at least 20 characters"
+    assert len(result["about_this_guide"]) >= 20, "about_this_guide must be at least 20 characters"
 
     assert "audience" in result
     assert isinstance(result["audience"], list)
@@ -156,8 +152,7 @@ def test_preface_conversion_with_payment_gateway(real_converter):
     # Check that audience includes developer-related roles
     audience_lower = [aud.lower() for aud in result["audience"]]
     assert any(
-        term in " ".join(audience_lower)
-        for term in ["developer", "engineer", "architect"]
+        term in " ".join(audience_lower) for term in ["developer", "engineer", "architect"]
     ), "Audience should include technical roles"
 
 

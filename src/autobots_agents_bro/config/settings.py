@@ -26,12 +26,8 @@ class Settings(BaseSettings):
     langfuse_enabled: bool = Field(default=True, description="Enable Langfuse tracing")
 
     # GitHub OAuth settings for Chainlit
-    oauth_github_client_id: str = Field(
-        default="", description="GitHub OAuth client ID"
-    )
-    oauth_github_client_secret: str = Field(
-        default="", description="GitHub OAuth client secret"
-    )
+    oauth_github_client_id: str = Field(default="", description="GitHub OAuth client ID")
+    oauth_github_client_secret: str = Field(default="", description="GitHub OAuth client secret")
     chainlit_auth_secret: str = Field(default="", description="Chainlit auth secret")
 
     # Application settings
@@ -46,11 +42,7 @@ class Settings(BaseSettings):
 
     def is_langfuse_configured(self) -> bool:
         """Check if Langfuse is properly configured."""
-        return bool(
-            self.langfuse_enabled
-            and self.langfuse_public_key
-            and self.langfuse_secret_key
-        )
+        return bool(self.langfuse_enabled and self.langfuse_public_key and self.langfuse_secret_key)
 
     def is_oauth_configured(self) -> bool:
         """Check if GitHub OAuth is properly configured."""

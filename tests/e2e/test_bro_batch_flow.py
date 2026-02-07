@@ -63,5 +63,8 @@ def test_e2e_bro_batch_across_agents():
 
 def test_e2e_bro_batch_validation_rejects_unknown():
     """BRO gate rejects unknown agents — no API key required."""
-    with pytest.raises(ValueError, match="Unknown BRO agent"):
+    with pytest.raises(
+        ValueError,
+        match="Agent 'ghost_agent' is not enabled for batch processing\\. Valid batch-enabled agents: coordinator, preface_agent, getting_started_agent, features_agent, entity_agent",
+    ):
         bro_batch("ghost_agent", ["hello"])

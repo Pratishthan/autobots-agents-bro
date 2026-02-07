@@ -72,5 +72,8 @@ def test_bro_batch_agent_name_preserved():
 
 def test_bro_batch_rejects_non_bro_agent():
     """BRO gate fires before any LLM call — no API key needed."""
-    with pytest.raises(ValueError, match="Unknown BRO agent"):
+    with pytest.raises(
+        ValueError,
+        match="Agent 'not_a_bro_agent' is not enabled for batch processing\\. Valid batch-enabled agents: coordinator, preface_agent, getting_started_agent, features_agent, entity_agent",
+    ):
         bro_batch("not_a_bro_agent", ["hello"])

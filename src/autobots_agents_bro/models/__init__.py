@@ -9,8 +9,8 @@ from autobots_agents_bro.models.document import (
 from autobots_agents_bro.models.status import SectionStatus
 
 __all__ = [
-    "SectionStatus",
-    "SectionMeta",
-    "DynamicItems",
     "DocumentMeta",
+    "DynamicItems",
+    "SectionMeta",
+    "SectionStatus",
 ]

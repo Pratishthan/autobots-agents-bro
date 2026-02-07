@@ -38,9 +38,7 @@ class TestBatchEnabledConfig:
         for agent_name in expected_batch_agents:
             agent = agents.get(agent_name)
             assert agent is not None, f"Agent {agent_name} not found in config"
-            assert (
-                agent.batch_enabled is True
-            ), f"Agent {agent_name} should be batch_enabled"
+            assert agent.batch_enabled is True, f"Agent {agent_name} should be batch_enabled"
 
 
 class TestGetBatchEnabledAgents:

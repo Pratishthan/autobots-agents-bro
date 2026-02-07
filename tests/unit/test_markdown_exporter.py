@@ -28,9 +28,7 @@ def populated_doc(temp_store: DocumentStore):
         {
             "about_this_guide": "This guide describes the test service vision.",
             "audience": ["Developers", "Architects"],
-            "glossary": [
-                {"term": "API", "definition": "Application Programming Interface"}
-            ],
+            "glossary": [{"term": "API", "definition": "Application Programming Interface"}],
         },
     )
     temp_store.update_section_status(meta, "01-preface", SectionStatus.COMPLETE)
@@ -65,9 +63,7 @@ def populated_doc(temp_store: DocumentStore):
             ]
         },
     )
-    temp_store.update_section_status(
-        meta, "03-01-list-of-features", SectionStatus.DRAFT
-    )
+    temp_store.update_section_status(meta, "03-01-list-of-features", SectionStatus.DRAFT)
 
     return meta
 
@@ -75,18 +71,14 @@ def populated_doc(temp_store: DocumentStore):
 class TestExportDocument:
     """Tests for export_document function."""
 
-    def test_exports_document_header(
-        self, temp_store: DocumentStore, populated_doc
-    ) -> None:
+    def test_exports_document_header(self, temp_store: DocumentStore, populated_doc) -> None:
         """Export should include document title."""
         result = export_document(temp_store, populated_doc)
 
         assert "# test-service" in result
         assert "v1" in result
 
-    def test_exports_preface_section(
-        self, temp_store: DocumentStore, populated_doc
-    ) -> None:
+    def test_exports_preface_section(self, temp_store: DocumentStore, populated_doc) -> None:
         """Export should include preface content."""
         result = export_document(temp_store, populated_doc)
 
@@ -104,9 +96,7 @@ class TestExportDocument:
         assert "core functionality" in result
         assert "most reliable testing platform" in result
 
-    def test_exports_features_section(
-        self, temp_store: DocumentStore, populated_doc
-    ) -> None:
+    def test_exports_features_section(self, temp_store: DocumentStore, populated_doc) -> None:
         """Export should include features content."""
         result = export_document(temp_store, populated_doc)
 
@@ -114,18 +104,14 @@ class TestExportDocument:
         assert "User Auth" in result
         assert "Reporting" in result
 
-    def test_exports_glossary_as_list(
-        self, temp_store: DocumentStore, populated_doc
-    ) -> None:
+    def test_exports_glossary_as_list(self, temp_store: DocumentStore, populated_doc) -> None:
         """Export should format glossary as definition list."""
         result = export_document(temp_store, populated_doc)
 
         assert "API" in result
         assert "Application Programming Interface" in result
 
-    def test_exports_empty_sections_with_placeholder(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_exports_empty_sections_with_placeholder(self, temp_store: DocumentStore) -> None:
         """Export should show placeholder for empty sections."""
         meta = temp_store.create_document("empty-service", "v1")
 

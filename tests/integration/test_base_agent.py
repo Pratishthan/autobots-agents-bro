@@ -1,7 +1,12 @@
 # ABOUTME: Integration tests for the dynagent base agent creation.
 # ABOUTME: Verifies create_base_agent produces a runnable agent with invoke capability.
 
+from typing import TYPE_CHECKING
+
 from tests.conftest import requires_google_api
+
+if TYPE_CHECKING:
+    from langchain_core.runnables import RunnableConfig
 
 
 @requires_google_api
@@ -30,7 +35,6 @@ async def test_create_base_agent_responds_to_message():
     from autobots_devtools_shared_lib.dynagent.agents.base_agent import (
         create_base_agent,
     )
-    from langchain_core.runnables import RunnableConfig
     from langgraph.checkpoint.memory import InMemorySaver
 
     agent = create_base_agent(checkpointer=InMemorySaver())

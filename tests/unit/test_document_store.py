@@ -58,7 +58,7 @@ class TestDocumentCRUD:
         temp_store.create_document("gateway", "v1")
 
         meta_path = temp_store.base_path / "gateway" / "v1" / "_meta.json"
-        with open(meta_path) as f:
+        with meta_path.open() as f:
             data = json.load(f)
 
         assert data["component"] == "gateway"
@@ -74,9 +74,7 @@ class TestDocumentCRUD:
         assert meta.component == "test-comp"
         assert meta.version == "v1"
 
-    def test_get_document_returns_none_when_not_found(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_get_document_returns_none_when_not_found(self, temp_store: DocumentStore) -> None:
         """get_document should return None for non-existent documents."""
         meta = temp_store.get_document("nonexistent", "v1")
 
@@ -110,9 +108,7 @@ class TestDocumentCRUD:
         assert result is True
         assert temp_store.get_document("to-delete", "v1") is None
 
-    def test_delete_document_returns_false_when_not_found(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_delete_document_returns_false_when_not_found(self, temp_store: DocumentStore) -> None:
         """delete_document should return False for non-existent documents."""
         result = temp_store.delete_document("nonexistent", "v1")
 
@@ -138,9 +134,7 @@ class TestSectionOperations:
 
         temp_store.write_section(meta, "02-getting-started", content)
 
-        section_path = (
-            temp_store.base_path / "gateway" / "v1" / "02-getting-started.json"
-        )
+        section_path = temp_store.base_path / "gateway" / "v1" / "02-getting-started.json"
         assert section_path.exists()
 
     def test_read_section(self, temp_store: DocumentStore) -> None:
@@ -153,9 +147,7 @@ class TestSectionOperations:
 
         assert result == content
 
-    def test_read_section_returns_none_when_not_found(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_read_section_returns_none_when_not_found(self, temp_store: DocumentStore) -> None:
         """read_section should return None for non-existent sections."""
         meta = temp_store.create_document("gateway", "v1")
 
@@ -167,9 +159,7 @@ class TestSectionOperations:
         """update_section_status should update the status in metadata."""
         meta = temp_store.create_document("gateway", "v1")
 
-        result = temp_store.update_section_status(
-            meta, "01-preface", SectionStatus.COMPLETE
-        )
+        result = temp_store.update_section_status(meta, "01-preface", SectionStatus.COMPLETE)
 
         assert result is True
 
@@ -206,16 +196,12 @@ class TestDynamicEntities:
         assert reloaded is not None
         assert "transaction-record" in reloaded.dynamic_items.entities
 
-    def test_create_entity_creates_section_file(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_create_entity_creates_section_file(self, temp_store: DocumentStore) -> None:
         """create_entity should create the entity section file."""
         meta = temp_store.create_document("gateway", "v1")
         temp_store.create_entity(meta, "user-account")
 
-        entity_path = (
-            temp_store.base_path / "gateway" / "v1" / "05-entity-user-account.json"
-        )
+        entity_path = temp_store.base_path / "gateway" / "v1" / "05-entity-user-account.json"
         assert entity_path.exists()
 
     def test_list_entities_empty(self, temp_store: DocumentStore) -> None:
@@ -262,18 +248,14 @@ class TestDynamicEntities:
         """delete_entity should remove the entity section file."""
         meta = temp_store.create_document("gateway", "v1")
         temp_store.create_entity(meta, "to-delete")
-        entity_path = (
-            temp_store.base_path / "gateway" / "v1" / "05-entity-to-delete.json"
-        )
+        entity_path = temp_store.base_path / "gateway" / "v1" / "05-entity-to-delete.json"
         assert entity_path.exists()
 
         temp_store.delete_entity(meta, "to-delete")
 
         assert not entity_path.exists()
 
-    def test_delete_entity_returns_false_when_not_found(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_delete_entity_returns_false_when_not_found(self, temp_store: DocumentStore) -> None:
         """delete_entity should return False for non-existent entities."""
         meta = temp_store.create_document("gateway", "v1")
 
@@ -285,9 +267,7 @@ class TestDynamicEntities:
 class TestLastSection:
     """Tests for last_section tracking."""
 
-    def test_write_section_updates_last_section(
-        self, temp_store: DocumentStore
-    ) -> None:
+    def test_write_section_updates_last_section(self, temp_store: DocumentStore) -> None:
         """write_section should update last_section in metadata."""
         meta = temp_store.create_document("gateway", "v1")
         temp_store.write_section(meta, "02-getting-started", {"vision": "test"})

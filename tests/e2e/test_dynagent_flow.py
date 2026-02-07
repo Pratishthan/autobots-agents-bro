@@ -1,11 +1,15 @@
 # ABOUTME: End-to-end tests for the dynagent reference architecture.
 # ABOUTME: Full flow: create agent, send message, verify response and state transitions.
 
+from typing import TYPE_CHECKING
+
 from autobots_devtools_shared_lib.dynagent.agents.base_agent import create_base_agent
-from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import InMemorySaver
 
 from tests.conftest import requires_google_api
+
+if TYPE_CHECKING:
+    from langchain_core.runnables import RunnableConfig
 
 
 @requires_google_api
@@ -34,9 +38,7 @@ async def test_e2e_handoff_transition():
     agent = create_base_agent(checkpointer=InMemorySaver())
     config: RunnableConfig = {"configurable": {"thread_id": "e2e-test-2"}}
     state = {
-        "messages": [
-            {"role": "user", "content": "Please hand off to the preface agent."}
-        ],
+        "messages": [{"role": "user", "content": "Please hand off to the preface agent."}],
         "agent_name": "coordinator",
         "session_id": "e2e-session-2",
     }

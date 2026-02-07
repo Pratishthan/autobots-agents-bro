@@ -65,8 +65,7 @@ def _export_preface(store: DocumentStore, meta: DocumentMeta) -> list[str]:
     if audience := content.get("audience"):
         lines.append("### 1.2 Audience")
         lines.append("")
-        for item in audience:
-            lines.append(f"- {item}")
+        lines.extend(f"- {item}" for item in audience)
         lines.append("")
 
     # Reference Documents
@@ -125,8 +124,7 @@ def _export_getting_started(store: DocumentStore, meta: DocumentMeta) -> list[st
     if metrics := content.get("success_metrics"):
         lines.append("### 2.3 Success Metrics")
         lines.append("")
-        for metric in metrics:
-            lines.append(f"- {metric}")
+        lines.extend(f"- {metric}" for metric in metrics)
         lines.append("")
 
     return lines
@@ -226,8 +224,7 @@ def _export_entities(store: DocumentStore, meta: DocumentMeta) -> list[str]:
         if rules := content.get("business_rules"):
             lines.append("#### Business Rules")
             lines.append("")
-            for rule in rules:
-                lines.append(f"- {rule}")
+            lines.extend(f"- {rule}" for rule in rules)
             lines.append("")
 
     return lines
