@@ -2,21 +2,13 @@
 # ABOUTME: Delegates to dynagent's batch_invoker after the BRO gate passes.
 
 import logging
-import uuid
-from contextlib import nullcontext
 
 from autobots_devtools_shared_lib.dynagent.agents.batch import (
     BatchResult,
     batch_invoker,
 )
-from autobots_devtools_shared_lib.dynagent.observability.tracing import (
-    flush_tracing,
-    get_langfuse_client,
-    get_langfuse_handler,
-    init_tracing,
-)
+from autobots_devtools_shared_lib.dynagent.observability.tracing import init_tracing
 from dotenv import load_dotenv
-from langfuse import propagate_attributes
 
 logger = logging.getLogger(__name__)
 load_dotenv()
@@ -63,61 +55,34 @@ def bro_batch(agent_name: str, records: list[str]) -> BatchResult:
     if not records:
         raise ValueError("records must not be empty")
 
+    # Initialize tracing (one-time singleton)
     init_tracing()
-    batch_id = str(uuid.uuid4())
-    client = get_langfuse_client()
-    langfuse_handler = get_langfuse_handler()
 
+    # BRO entry logging
     logger.info(
-        "bro_batch starting: agent=%s records=%d batch_id=%s",
+        "bro_batch starting: agent=%s records=%d",
         agent_name,
         len(records),
-        batch_id,
     )
 
-    try:
-        with propagate_attributes(
-            user_id=agent_name,
-            session_id=batch_id,
-            tags=[APP_NAME],  # Tag with app name for filtering in Langfuse
-        ):
-            # nullcontext keeps the happy path single-branch when Langfuse
-            # is not configured; otherwise we get a real span to stamp later.
-            span_ctx = (
-                client.start_as_current_span(
-                    name=f"{APP_NAME}-{agent_name}-batch",
-                    input={
-                        "agent_name": agent_name,
-                        "record_count": len(records),
-                    },
-                    metadata={"batch_id": batch_id},
-                )
-                if client is not None
-                else nullcontext()
-            )
-            with span_ctx as span:
-                # Pass langfuse_handler to get per-record LLM call tracing
-                callbacks = [langfuse_handler] if langfuse_handler else None
-                result = batch_invoker(agent_name, records, callbacks=callbacks)
+    # Delegate to batch_invoker with BRO metadata
+    result = batch_invoker(
+        agent_name,
+        records,
+        enable_tracing=True,
+        trace_metadata={
+            "app_name": APP_NAME,  # Preserves span name: "bro_batch-{agent_name}-batch"
+            "user_id": agent_name,
+            "tags": [APP_NAME],
+        },
+    )
 
-                if span is not None:
-                    span.update(
-                        output={
-                            "total": len(records),
-                            "successes": len(result.successes),
-                            "failures": len(result.failures),
-                        }
-                    )
-    finally:
-        flush_tracing()
-
-    # --- Exit log ---
+    # BRO exit logging
     logger.info(
-        "bro_batch complete: agent=%s successes=%d failures=%d batch_id=%s",
+        "bro_batch complete: agent=%s successes=%d failures=%d",
         agent_name,
         len(result.successes),
         len(result.failures),
-        batch_id,
     )
 
     return result

@@ -91,7 +91,7 @@ def get_preloaded_prompts(msg: Any) -> str:
 async def start():
     # Create agent instance once and store it in session
     init_tracing()
-    agent = create_base_agent()
+    agent = create_base_agent(agent_name="coordinator")
     cl.user_session.set("agent", agent)
     await cl.context.emitter.set_commands(commands)
     await cl.Message(content="Hello, how can I help you today?").send()
