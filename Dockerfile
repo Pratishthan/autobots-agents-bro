@@ -47,6 +47,10 @@ RUN groupadd -g 1000 app && \
 # Set working directory
 WORKDIR /app
 
+# Create directories for volume mounts with correct ownership
+RUN mkdir -p configs vision-docs workspace && \
+    chown -R app:app configs vision-docs workspace
+
 # Copy requirements from builder
 COPY --from=builder /build/requirements.txt .
 

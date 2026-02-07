@@ -234,3 +234,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Persistent data directories (Docker volumes)
+vision-docs/
+workspace/

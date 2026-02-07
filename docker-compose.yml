@@ -18,8 +18,13 @@ services:
       - OAUTH_GITHUB_CLIENT_SECRET=${OAUTH_GITHUB_CLIENT_SECRET:-}
       - CHAINLIT_AUTH_SECRET=${CHAINLIT_AUTH_SECRET:-}
       - DEBUG=${DEBUG:-false}
+      - LLM_MODEL=${LLM_MODEL:-gemini-2.0-flash}
+      - DYNAGENT_CONFIG_ROOT_DIR=/app/configs/bro
     volumes:
       - ./src:/app/src:ro
+      - ./configs:/app/configs:ro
+      - ./vision-docs:/app/vision-docs:rw
+      - ./workspace:/app/workspace:rw
     restart: unless-stopped
     depends_on:
       langfuse-web:
