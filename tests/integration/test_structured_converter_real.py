@@ -74,22 +74,22 @@ def test_getting_started_conversion_with_collection_data(real_converter):
 
     # Validate content quality - key terms should be present
     overview_lower = result["overview"].lower()
-    assert any(
-        term in overview_lower for term in ["collection", "payable", "receivable"]
-    ), "Overview should mention Collection/payables/receivables"
+    assert any(term in overview_lower for term in ["collection", "payable", "receivable"]), (
+        "Overview should mention Collection/payables/receivables"
+    )
 
     vision_lower = result["vision"].lower()
-    assert any(
-        term in vision_lower for term in ["vision", "future", "source of truth"]
-    ), "Vision should mention long-term goals"
+    assert any(term in vision_lower for term in ["vision", "future", "source of truth"]), (
+        "Vision should mention long-term goals"
+    )
 
     # Optional field - if present, validate structure
     if "success_metrics" in result:
         assert isinstance(result["success_metrics"], list)
         if len(result["success_metrics"]) > 0:
-            assert all(
-                isinstance(metric, str) for metric in result["success_metrics"]
-            ), "All success metrics must be strings"
+            assert all(isinstance(metric, str) for metric in result["success_metrics"]), (
+                "All success metrics must be strings"
+            )
 
 
 @requires_google_api
@@ -139,15 +139,15 @@ def test_preface_conversion_with_payment_gateway(real_converter):
     assert "audience" in result
     assert isinstance(result["audience"], list)
     assert len(result["audience"]) >= 1, "Must have at least one audience member"
-    assert all(
-        isinstance(aud, str) for aud in result["audience"]
-    ), "All audience items must be strings"
+    assert all(isinstance(aud, str) for aud in result["audience"]), (
+        "All audience items must be strings"
+    )
 
     # Validate content quality
     about_lower = result["about_this_guide"].lower()
-    assert any(
-        term in about_lower for term in ["guide", "document", "payment", "gateway"]
-    ), "about_this_guide should describe the document purpose"
+    assert any(term in about_lower for term in ["guide", "document", "payment", "gateway"]), (
+        "about_this_guide should describe the document purpose"
+    )
 
     # Check that audience includes developer-related roles
     audience_lower = [aud.lower() for aud in result["audience"]]
