@@ -13,6 +13,7 @@ agents:
       - "set_document_context"
       - "export_markdown"
       - "get_agent_list"
+    max_concurrency: 2
 
   preface_agent:
     section: "01-preface"
